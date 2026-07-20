@@ -103,6 +103,7 @@
       text-transform: capitalize;
     }
     .expand-row td { padding: 0; background: var(--lighter-grey); }
+    .notif-msg { max-width: 24rem; color: var(--light-color); font-size: 1.3rem; }
   }
 
   .empty-row { padding: var(--space-4); text-align: center; color: var(--light-color); }

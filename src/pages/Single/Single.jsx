@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import './Single.scss';
-import { FaMinus, FaPlus, FaStar, FaStarHalf, FaShippingFast, FaCheck, FaShareAlt } from 'react-icons/fa';
+import { FaMinus, FaPlus, FaStar, FaStarHalf, FaShippingFast, FaCheck, FaShareAlt, FaHeart } from 'react-icons/fa';
 import { FaArrowLeft } from 'react-icons/fa6';
 import { fetchProductBySlug, fetchReviews, addReview, fetchProducts } from '../../lib/api';
 import { useCart } from '../../lib/CartContext';
 import { useAuth } from '../../lib/AuthContext';
+import { useWishlist } from '../../lib/WishlistContext';
 import { useToast } from '../../lib/ToastContext';
 import ShareModal from '../../components/ShareModal/ShareModal';
 import ProductCard from '../../components/ProductCard/ProductCard';
@@ -24,7 +25,9 @@ export default function Single() {
   const [newComment, setNewComment] = useState('');
   const { addToCart } = useCart();
   const { user } = useAuth();
+  const { has, toggle } = useWishlist();
   const { notify } = useToast();
+  const liked = product ? has(product.id) : false;
 
   useEffect(() => {
     setLoading(true);
@@ -65,6 +68,16 @@ export default function Single() {
     }
   };
 
+  const handleWishlist = async () => {
+    if (!user) { notify('Please sign in to save items.', 'info'); navigate('/login'); return; }
+    try {
+      await toggle(product.id);
+      notify(liked ? 'Removed from wishlist' : 'Saved to wishlist', liked ? 'info' : 'success');
+    } catch (err) {
+      notify(err.message || 'Could not update wishlist', 'error');
+    }
+  };
+
   const submitReview = async (e) => {
     e.preventDefault();
     if (!user) { notify('Sign in to leave a review.', 'info'); return; }
@@ -102,8 +115,9 @@ export default function Single() {
       <div className="product-detail">
         <div className="product-image">
           <img src={product.image_url} alt={product.title} />
+          <button className="heart-fab" onClick={handleWishlist} title="Save to wishlist"><FaHeart style={{ color: liked ? 'var(--error)' : 'var(--white)' }} /></button>
           <button className="share-fab" onClick={() => setShareOpen(!shareOpen)}><FaShareAlt /></button>
-          {shareOpen && <ShareModal visible={shareOpen} setVisible={setShareOpen} url={window.location.href} title={product.title} />}
+          {shareOpen && <ShareModal visible={shareOpen} setVisible={setShareOpen} url={`${window.location.origin}/shop/${product.slug}`} title={product.title} />}
         </div>
 
         <div className="product-info">

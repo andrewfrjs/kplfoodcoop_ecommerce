@@ -1,10 +1,29 @@
-import { Outlet, NavLink, Navigate, Link } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
+import { Outlet, NavLink, Navigate, Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../../lib/AuthContext';
-import { FaTachometerAlt, FaBox, FaShoppingBag, FaUsers, FaFileAlt, FaHome, FaSignOutAlt } from 'react-icons/fa';
+import { FaTachometerAlt, FaBox, FaShoppingBag, FaUsers, FaFileAlt, FaHome, FaSignOutAlt, FaHeart, FaBell, FaBars, FaTimes } from 'react-icons/fa';
 import './AdminLayout.scss';
 
 export default function AdminLayout() {
   const { user, profile, loading, signOut } = useAuth();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const location = useLocation();
+  const sidebarRef = useRef(null);
+
+  useEffect(() => {
+    setSidebarOpen(false);
+  }, [location.pathname]);
+
+  useEffect(() => {
+    const onClick = (e) => {
+      if (window.innerWidth > 768) return;
+      if (sidebarRef.current && !sidebarRef.current.contains(e.target) && !e.target.closest('.admin-menu-btn')) {
+        setSidebarOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', onClick);
+    return () => document.removeEventListener('mousedown', onClick);
+  }, []);
 
   if (loading) return <div className="admin-loading"><div className="spinner" /></div>;
   if (!user) return <Navigate to="/login" replace />;
@@ -15,16 +34,24 @@ export default function AdminLayout() {
     { to: '/admin/products', label: 'Products', icon: <FaBox /> },
     { to: '/admin/orders', label: 'Orders', icon: <FaShoppingBag /> },
     { to: '/admin/users', label: 'Users', icon: <FaUsers /> },
+    { to: '/admin/wishlists', label: 'Wishlists', icon: <FaHeart /> },
     { to: '/admin/blogs', label: 'Blog Posts', icon: <FaFileAlt /> },
+    { to: '/admin/notifications', label: 'Notifications', icon: <FaBell /> },
   ];
 
   return (
     <div className="admin">
-      <aside className="admin-sidebar">
-        <Link to="/admin" className="admin-logo">
-          <span className="logo-mark">KPL</span>
-          <span>Admin</span>
-        </Link>
+      <button className="admin-menu-btn" onClick={() => setSidebarOpen(true)} aria-label="Open menu"><FaBars /></button>
+      {sidebarOpen && <div className="admin-overlay" onClick={() => setSidebarOpen(false)} />}
+
+      <aside className={`admin-sidebar ${sidebarOpen ? 'open' : ''}`} ref={sidebarRef}>
+        <div className="sidebar-head">
+          <Link to="/admin" className="admin-logo">
+            <span className="logo-mark">KPL</span>
+            <span>Admin</span>
+          </Link>
+          <button className="sidebar-close" onClick={() => setSidebarOpen(false)}><FaTimes /></button>
+        </div>
         <nav>
           {nav.map((n) => (
             <NavLink key={n.to} to={n.to} end={n.end} className={({ isActive }) => `admin-link ${isActive ? 'active' : ''}`}>

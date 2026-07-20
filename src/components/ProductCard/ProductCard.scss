@@ -1,6 +1,52 @@
 .product-card {
   display: flex;
   flex-direction: column;
+  position: relative;
+
+  .card-share {
+    position: absolute;
+    top: 4.5rem;
+    right: 1rem;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.2rem;
+    width: 260px;
+    box-shadow: var(--box-shadow-lg);
+    z-index: 20;
+    animation: fadeIn .15s ease;
+
+    .share-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      span { font-size: 1.4rem; font-weight: 600; color: var(--black); }
+      svg { cursor: pointer; color: var(--light-color); font-size: 1.6rem; &:hover { color: var(--black); } }
+    }
+    .share-icons {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: .6rem;
+      > * {
+        height: 4rem;
+        border-radius: var(--radius-sm);
+        background: var(--light-grey);
+        color: var(--black);
+        font-size: 1.7rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        border: none;
+        padding: 0;
+        &:hover { background: var(--green); color: var(--white); transform: scale(1.05); }
+      }
+      .copy-btn { background: var(--light-grey); }
+    }
+  }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
 
   .image { display: block; }
 

@@ -112,6 +112,10 @@ section {
   max-width: 1280px;
 }
 
+/* Offset for fixed header so content isn't hidden at scroll top */
+section:first-of-type { padding-top: 9rem; }
+.page-main { padding-top: 8rem; min-height: 60vh; }
+
 /* Buttons */
 .btn {
   display: inline-flex;

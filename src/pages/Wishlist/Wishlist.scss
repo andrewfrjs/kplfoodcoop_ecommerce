@@ -1,0 +1,52 @@
+.wishlist {
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: .6rem;
+    color: var(--light-color);
+    font-size: 1.4rem;
+    margin-bottom: var(--space-2);
+    &:hover { color: var(--green); }
+  }
+
+  .wishlist-grid {
+    grid-template-columns: repeat(auto-fill, minmax(24rem, 1fr));
+  }
+
+  .wishlist-card {
+    display: flex;
+    flex-direction: column;
+    .image {
+      display: block;
+      height: 20rem;
+      overflow: hidden;
+      background: var(--light-grey);
+      img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s ease; }
+      &:hover img { transform: scale(1.05); }
+      .card-tag {
+        position: absolute;
+        top: 1rem;
+        left: 1rem;
+        padding: .35rem .9rem;
+        border-radius: 999px;
+        font-size: 1.15rem;
+        font-weight: 600;
+        &.out { background: var(--error); color: var(--white); }
+      }
+    }
+    .content {
+      padding: var(--space-2);
+      display: flex;
+      flex-direction: column;
+      gap: .6rem;
+      h3 { font-size: 1.7rem; font-weight: 600; &:hover { color: var(--green); } }
+      .price { color: var(--green); font-weight: 700; font-size: 1.7rem; }
+      .actions {
+        display: flex;
+        gap: .6rem;
+        margin-top: auto;
+        .btn { flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: .5rem; }
+      }
+    }
+  }
+}

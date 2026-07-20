@@ -80,11 +80,12 @@ header {
     align-items: center;
     justify-content: center;
     position: relative;
-    overflow: hidden;
+    overflow: visible;
 
     img {
       width: 100%;
       height: 100%;
+      border-radius: 50%;
       object-fit: cover;
     }
 
@@ -106,6 +107,10 @@ header {
       border: 2px solid var(--white);
     }
 
+    .notif-dot {
+      background: var(--error);
+    }
+
     &:hover {
       color: var(--white);
       background: var(--green);
@@ -115,50 +120,121 @@ header {
 
   #menu-bars { display: none; }
 
-  .user-menu-wrap { position: relative; }
+  .heart-icon:hover { background: var(--error); }
+}
 
-  .user-dropdown {
-    position: absolute;
-    top: calc(100% + 8px);
-    right: 0;
-    width: 240px;
-    background: var(--white);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    box-shadow: var(--box-shadow-lg);
-    padding: .8rem;
+.notif-wrap { position: relative; }
+
+.notif-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 360px;
+  max-width: 92vw;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--box-shadow-lg);
+  z-index: 100;
+  overflow: hidden;
+
+  .notif-head {
     display: flex;
-    flex-direction: column;
-    gap: 2px;
-    z-index: 100;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.2rem 1.4rem;
+    border-bottom: 1px solid var(--border);
+    strong { font-size: 1.6rem; color: var(--black); }
+    button {
+      background: transparent;
+      color: var(--green);
+      font-size: 1.3rem;
+      font-weight: 600;
+      &:hover { text-decoration: underline; }
+    }
+  }
 
-    .user-info {
-      padding: 1rem;
-      border-bottom: 1px solid var(--border);
-      margin-bottom: .5rem;
+  .notif-list {
+    max-height: 380px;
+    overflow-y: auto;
+    .notif-empty { padding: 2rem; text-align: center; color: var(--light-color); font-size: 1.4rem; }
+  }
+
+  .notif-item {
+    display: flex;
+    gap: 1rem;
+    padding: 1.2rem 1.4rem;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    background: var(--green-light);
+    &:hover { background: var(--lighter-grey); }
+    &.read { background: var(--white); }
+    .notif-icon {
+      width: 3.6rem;
+      height: 3.6rem;
+      border-radius: 50%;
+      background: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      flex-shrink: 0;
+      border: 1px solid var(--border);
+    }
+    .notif-body {
       display: flex;
       flex-direction: column;
       gap: 2px;
-      strong { font-size: 1.5rem; color: var(--black); }
-      span { font-size: 1.25rem; color: var(--light-color); }
+      strong { font-size: 1.4rem; color: var(--black); }
+      span { font-size: 1.3rem; color: var(--light-color); }
+      em { font-size: 1.15rem; color: var(--text-muted); font-style: normal; }
     }
-    a {
-      padding: 1rem 1.2rem;
-      border-radius: var(--radius-sm);
-      font-size: 1.45rem;
-      color: var(--black-soft);
-      &:hover { background: var(--light-grey); color: var(--green); }
-    }
-    .signout-btn {
-      text-align: left;
-      padding: 1rem 1.2rem;
-      border-radius: var(--radius-sm);
-      font-size: 1.45rem;
-      background: transparent;
-      color: var(--error);
-      margin-top: .3rem;
-      &:hover { background: var(--error-light); }
-    }
+  }
+}
+
+.user-menu-wrap { position: relative; }
+
+.user-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 240px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--box-shadow-lg);
+  padding: .8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  z-index: 100;
+
+  .user-info {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: .5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    strong { font-size: 1.5rem; color: var(--black); }
+    span { font-size: 1.25rem; color: var(--light-color); }
+  }
+  a {
+    padding: 1rem 1.2rem;
+    border-radius: var(--radius-sm);
+    font-size: 1.45rem;
+    color: var(--black-soft);
+    &:hover { background: var(--light-grey); color: var(--green); }
+  }
+  .signout-btn {
+    text-align: left;
+    padding: 1rem 1.2rem;
+    border-radius: var(--radius-sm);
+    font-size: 1.45rem;
+    background: transparent;
+    color: var(--error);
+    margin-top: .3rem;
+    &:hover { background: var(--error-light); }
   }
 }
 

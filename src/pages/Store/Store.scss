@@ -78,6 +78,13 @@
 @media screen and (max-width: 768px) {
   .shop {
     .shop-layout { grid-template-columns: 1fr; }
+    .filter-overlay {
+      display: block;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, .5);
+      z-index: 1150;
+    }
     .filters {
       position: fixed;
       top: 0;

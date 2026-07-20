@@ -18,6 +18,7 @@ import Cart from './pages/Cart/Cart';
 import Checkout from './pages/Checkout/Checkout';
 import Orders from './pages/Orders/Orders';
 import Profile from './pages/Profile/Profile';
+import Wishlist from './pages/Wishlist/Wishlist';
 import NotFound from './pages/NotFound/NotFound';
 
 import LoginForm from './pages/Auth/LoginForm';
@@ -28,10 +29,14 @@ import AdminDashboard from './pages/Admin/AdminDashboard';
 import AdminProducts from './pages/Admin/AdminProducts';
 import AdminOrders from './pages/Admin/AdminOrders';
 import AdminUsers from './pages/Admin/AdminUsers';
+import AdminWishlists from './pages/Admin/AdminWishlists';
 import AdminBlogs from './pages/Admin/AdminBlogs';
+import AdminNotifications from './pages/Admin/AdminNotifications';
 
 import { AuthProvider, useAuth } from './lib/AuthContext';
 import { CartProvider } from './lib/CartContext';
+import { WishlistProvider } from './lib/WishlistContext';
+import { NotificationsProvider } from './lib/NotificationsContext';
 import { ToastProvider } from './lib/ToastContext';
 
 function RequireAdmin({ children }) {
@@ -70,6 +75,7 @@ const router = createBrowserRouter([
       { path: '/checkout', element: <Checkout /> },
       { path: '/orders', element: <Orders /> },
       { path: '/profile', element: <Profile /> },
+      { path: '/wishlist', element: <Wishlist /> },
     ],
   },
   { path: '/login', element: <LoginForm /> },
@@ -82,7 +88,9 @@ const router = createBrowserRouter([
       { path: 'products', element: <AdminProducts /> },
       { path: 'orders', element: <AdminOrders /> },
       { path: 'users', element: <AdminUsers /> },
+      { path: 'wishlists', element: <AdminWishlists /> },
       { path: 'blogs', element: <AdminBlogs /> },
+      { path: 'notifications', element: <AdminNotifications /> },
     ],
   },
   { path: '*', element: <NotFound /> },
@@ -98,10 +106,14 @@ function App() {
   return (
     <ToastProvider>
       <AuthProvider>
-        <CartProvider>
-          {loading && <Loader />}
-          {!loading && <RouterProvider router={router} />}
-        </CartProvider>
+        <WishlistProvider>
+          <NotificationsProvider>
+            <CartProvider>
+              {loading && <Loader />}
+              {!loading && <RouterProvider router={router} />}
+            </CartProvider>
+          </NotificationsProvider>
+        </WishlistProvider>
       </AuthProvider>
     </ToastProvider>
   );

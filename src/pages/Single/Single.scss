@@ -44,6 +44,22 @@
       box-shadow: var(--box-shadow);
       &:hover { background: var(--green); color: var(--white); }
     }
+    .heart-fab {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      width: 4rem;
+      height: 4rem;
+      border-radius: 50%;
+      background: rgba(15, 23, 42, .55);
+      backdrop-filter: blur(4px);
+      font-size: 1.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--box-shadow);
+      &:hover { background: var(--error); transform: scale(1.05); }
+    }
   }
 
   .product-info {

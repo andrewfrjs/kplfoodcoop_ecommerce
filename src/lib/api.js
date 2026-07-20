@@ -170,3 +170,97 @@ export async function updateProfile(userId, payload) {
   const { error } = await supabase.from('profiles').update(payload).eq('id', userId);
   if (error) throw error;
 }
+
+// Wishlists
+export async function fetchWishlist(userId) {
+  const { data, error } = await supabase
+    .from('wishlists')
+    .select('id, product_id, created_at, products(id, title, slug, price, image_url, stock, is_active)')
+    .eq('user_id', userId)
+    .order('created_at', { ascending: false });
+  if (error) throw error;
+  return data || [];
+}
+
+export async function fetchWishlistIds(userId) {
+  const { data, error } = await supabase
+    .from('wishlists')
+    .select('product_id')
+    .eq('user_id', userId);
+  if (error) throw error;
+  return new Set((data || []).map((r) => r.product_id));
+}
+
+export async function addToWishlist(userId, productId) {
+  const { error } = await supabase.from('wishlists').insert({ user_id: userId, product_id: productId });
+  if (error) {
+    if (error.code === '23505') return { duplicate: true };
+    throw error;
+  }
+  return { duplicate: false };
+}
+
+export async function removeFromWishlist(userId, productId) {
+  const { error } = await supabase.from('wishlists').delete().eq('user_id', userId).eq('product_id', productId);
+  if (error) throw error;
+}
+
+// Admin: all wishlists with user + product info
+export async function fetchAllWishlists() {
+  const { data, error } = await supabase
+    .from('wishlists')
+    .select('id, created_at, product_id, products(title, slug), profiles(full_name, email)')
+    .order('created_at', { ascending: false });
+  if (error) throw error;
+  return data || [];
+}
+
+// Notifications
+export async function fetchNotifications(userId) {
+  const { data, error } = await supabase
+    .from('notifications')
+    .select('*')
+    .or(`user_id.eq.${userId},user_id.is.null`)
+    .order('created_at', { ascending: false })
+    .limit(30);
+  if (error) throw error;
+  return data || [];
+}
+
+export async function markNotificationRead(id) {
+  const { error } = await supabase.from('notifications').update({ is_read: true }).eq('id', id);
+  if (error) throw error;
+}
+
+export async function markAllNotificationsRead(userId) {
+  const { error } = await supabase
+    .from('notifications')
+    .update({ is_read: true })
+    .eq('user_id', userId)
+    .eq('is_read', false);
+  if (error) throw error;
+  // also mark broadcasts read for this user by marking their copy (broadcasts have null user_id; tracked via separate read state)
+}
+
+// Admin notifications
+export async function fetchAllNotifications() {
+  const { data, error } = await supabase
+    .from('notifications')
+    .select('*, profiles(email)')
+    .order('created_at', { ascending: false })
+    .limit(100);
+  if (error) throw error;
+  return data || [];
+}
+
+export async function sendNotification({ userId, title, message, type = 'info' }) {
+  const payload = { title, message, type };
+  if (userId) payload.user_id = userId;
+  const { error } = await supabase.from('notifications').insert(payload);
+  if (error) throw error;
+}
+
+export async function deleteNotification(id) {
+  const { error } = await supabase.from('notifications').delete().eq('id', id);
+  if (error) throw error;
+}

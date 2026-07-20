@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import './Store.scss';
 import Flyer from '../../components/Flyer/Flyer';
 import ProductCard from '../../components/ProductCard/ProductCard';
@@ -12,6 +12,7 @@ export default function Store() {
   const [loading, setLoading] = useState(true);
   const [searchParams, setSearchParams] = useSearchParams();
   const [showFilters, setShowFilters] = useState(false);
+  const filtersRef = useRef(null);
 
   const activeCategory = searchParams.get('category') || '';
   const activeSearch = searchParams.get('search') || '';
@@ -28,6 +29,29 @@ export default function Store() {
       .catch(() => setProducts([]))
       .finally(() => setLoading(false));
   }, [activeCategory, activeSearch]);
+
+  // close filter drawer on outside click (mobile)
+  useEffect(() => {
+    if (!showFilters) return;
+    const onClick = (e) => {
+      if (window.innerWidth > 768) return;
+      if (filtersRef.current && !filtersRef.current.contains(e.target) && !e.target.closest('.filter-toggle')) {
+        setShowFilters(false);
+      }
+    };
+    document.addEventListener('mousedown', onClick);
+    return () => document.removeEventListener('mousedown', onClick);
+  }, [showFilters]);
+
+  // close filter drawer on scroll (mobile)
+  useEffect(() => {
+    if (!showFilters) return;
+    const onScroll = () => {
+      if (window.innerWidth <= 768) setShowFilters(false);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [showFilters]);
 
   const sorted = useMemo(() => {
     const arr = [...products];
@@ -54,8 +78,9 @@ export default function Store() {
         <p className="text-muted">{sorted.length} item{sorted.length !== 1 ? 's' : ''}{activeSearch ? ` matching "${activeSearch}"` : ''}</p>
       </div>
 
+      {showFilters && <div className="filter-overlay" onClick={() => setShowFilters(false)} />}
       <div className="shop-layout">
-        <aside className={`filters ${showFilters ? 'open' : ''}`}>
+        <aside className={`filters ${showFilters ? 'open' : ''}`} ref={filtersRef}>
           <div className="filter-head">
             <h3>Filters</h3>
             <button className="close-filters" onClick={() => setShowFilters(false)}><FaTimes /></button>
