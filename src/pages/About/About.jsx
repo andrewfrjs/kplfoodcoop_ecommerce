@@ -1,103 +1,98 @@
-import  React from 'react';
 import './About.css';
-import Image from '../../assets/kpl.webp';
-import {FaCheckCircle, FaDollarSign, FaFacebook, FaHeadset, FaInstagram, FaShippingFast, FaTwitter, FaYoutube } from "react-icons/fa";
+import { FaCheckCircle, FaDollarSign, FaFacebook, FaHeadset, FaInstagram, FaShippingFast, FaTwitter } from 'react-icons/fa';
+import { FaXTwitter } from 'react-icons/fa6';
 import Faq from '../../components/FaqItem/Faq';
 import Review from '../../components/Review/Review';
-import { FaX, FaXTwitter } from 'react-icons/fa6';
 import Newsletter from '../../components/Newsletter/Newsletter';
-import { NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 export default function About() {
   return (
-    <section className='about' id='about'>
-        <div className="channel-info">
-            <div className="container">
-                <div className="channel-icon">
-                	<img src={Image} alt="" />
-                </div>
-                
-                <div className="channel-title">
-                	<h1>KPLFOODCOOP<FaCheckCircle className='check'/></h1>
-                </div>
-                
-                <div className="channel-subscribe">
-                	<button className="subscribe-btn">Subscribed 100k</button>
-                	<button className="twitter-btn" aria-label="Enable Notifications"><FaXTwitter /></button>
-                </div>
-            </div>
-            <p>Welcome all to kplfoodcoop. Here you will be able to shop food products for all your household needs. Feel free to ask any question in the contact page and don't forget to subscribe to our newsletter.</p>
-            <span>
-                <a href="https://www.facebook.com/kibetkorirc" className='facebook icon' target='_blank' title='facebook'><FaFacebook /></a>
-                <a href="https://twitter.com/ancientpupy" className='twitter icon' target='_blank' title='twitter'><FaXTwitter  /></a>
-                <a href="https://www.instagram.com/ancientpupy/" className='instagram icon' target='_blank' title='instagram'><FaInstagram /></a>
-                <a href="/contact" title='contact' className='btn'>Contact Us</a>
-            </span>
+    <section className="about">
+      <div className="channel-info">
+        <div className="container">
+          <div className="channel-icon">
+            <span className="logo-mark">KPL</span>
+          </div>
+          <div className="channel-title">
+            <h1>KPL FoodCoop <FaCheckCircle className="check" /></h1>
+            <p>Trusted by 100k+ shoppers across Kenya</p>
+          </div>
         </div>
-        <div className="row">
+        <p className="intro">
+          Welcome to KPL FoodCoop — your online grocery cooperative. We connect you directly with local farmers
+          to bring fresh, quality produce to your door at fair prices. Shop groceries, manage orders, and track
+          deliveries all in one place.
+        </p>
+        <div className="socials">
+          <a href="https://www.facebook.com/" target="_blank" rel="noreferrer" aria-label="Facebook"><FaFacebook /></a>
+          <a href="https://twitter.com/" target="_blank" rel="noreferrer" aria-label="Twitter"><FaXTwitter /></a>
+          <a href="https://www.instagram.com/" target="_blank" rel="noreferrer" aria-label="Instagram"><FaInstagram /></a>
+          <Link to="/contact-us" className="btn btn-green">Contact Us</Link>
+        </div>
+      </div>
+
+      <div className="row">
         <div className="image">
-                <img src={Image} alt="" />
-            </div>
-            <div className="content">
-                <h1 className="heading">About <span style={{color: "#9B5DE5"}}>us</span></h1>
-                <p>Catering to the individualistic needs of each student.<br/>
-                    Maria Auxilium Girls’ Hr. Sec. School is situated at 15G Damalwar Street, Kancheepuram. It is set in a
-                    conducive atmosphere suitable for the growth of young minds. At Maria Auxilium School every child is given
-                    individual attention to ensure their holistic development. At MAS , all the needs of the child are met with understanding and utmost care, be it physical, emotional, intellectual or spiritual.
-                </p>
-            </div>
+          <img src="https://images.pexels.com/photos/2255935/pexels-photo-2255935.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Local farm" />
         </div>
-        <div className="row">
-            <div className="content">
-                <h1 className="heading">Our <span style={{color: "#9B5DE5"}}>mission</span></h1>
-                <p>Catering to the individualistic needs of each student.<br/>
-                    Maria Auxilium Girls’ Hr. Sec. School is situated at 15G Damalwar Street, Kancheepuram. It is set in a
-                    conducive atmosphere suitable for the growth of young minds. At Maria Auxilium School every child is given
-                    individual attention to ensure their holistic development. At MAS , all the needs of the child are met with understanding and utmost care, be it physical, emotional, intellectual or spiritual.
-                </p>
-            </div>
-            <div className="image">
-                <img src={Image} alt="" />
-            </div>
+        <div className="content">
+          <p className="sub-heading">Our story</p>
+          <h1>Bringing farms to your table</h1>
+          <p>
+            KPL FoodCoop started with a simple idea: make fresh food accessible and affordable while supporting
+            the farmers who grow it. We cut out the middlemen so you get better prices and farmers get a fair deal.
+            Today we serve thousands of households across Nairobi and beyond.
+          </p>
         </div>
-        <section>
- </section>
-        <h3 className="sub-heading">about us</h3>
-        <h1>why choose us?</h1>
-        
-        <div className="row">
-            <div className="content">
-                <h3>best food in town</h3>
-                <p> 
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit natus dolor cumque.
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit natus dolor cumque.
-                </p>
-                <div className="icons-container">
-                    <div className="icons">
-                        <FaShippingFast className='icon'/>
-                        <span>Fast delivery</span>
-                    </div>
-                    <div className="icons">
-                        <FaDollarSign className='icon'/>
-                        <span>easy payments</span>
-                    </div>
-                    <div className="icons">
-                        <FaHeadset className='icon'/>
-                        <span>27/7 service</span>
-                    </div>
-                </div>
-                <NavLink to="/shop" className="btn">Go Shopping</NavLink>
-            </div>
+      </div>
+
+      <div className="row reverse">
+        <div className="image">
+          <img src="https://images.pexels.com/photos/1300972/pexels-photo-1300972.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Fresh produce" />
         </div>
-        <h1>FAQ</h1>
-        <div className="faqs-container">
-            <Faq />
-            <Faq />
-            <Faq />
-            <Faq />
+        <div className="content">
+          <p className="sub-heading">Our mission</p>
+          <h1>Fresh food for every household</h1>
+          <p>
+            We believe everyone deserves access to nutritious, fresh food. Our mission is to build Kenya's most
+            trusted food cooperative — one that supports local agriculture, reduces food waste, and delivers
+            quality you can taste.
+          </p>
         </div>
-        <Review />
-        <Newsletter />
+      </div>
+
+      <div className="section-header">
+        <p className="sub-heading">Why us</p>
+        <h1 className="heading">Why choose KPL FoodCoop?</h1>
+      </div>
+
+      <div className="features">
+        <div className="feature">
+          <FaShippingFast className="icon" />
+          <h3>Fast Delivery</h3>
+          <p>Same-day delivery in Nairobi. Next-day everywhere else.</p>
+        </div>
+        <div className="feature">
+          <FaDollarSign className="icon" />
+          <h3>Fair Prices</h3>
+          <p>Direct from farmers, no middlemen markups.</p>
+        </div>
+        <div className="feature">
+          <FaHeadset className="icon" />
+          <h3>24/7 Support</h3>
+          <p>Our team is here whenever you need help.</p>
+        </div>
+      </div>
+
+      <div className="section-header">
+        <p className="sub-heading">FAQ</p>
+        <h1 className="heading">Frequently Asked Questions</h1>
+      </div>
+      <Faq />
+
+      <Review />
+      <Newsletter />
     </section>
-  )
+  );
 }

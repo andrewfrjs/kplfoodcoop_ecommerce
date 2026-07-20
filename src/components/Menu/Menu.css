@@ -1,74 +1,21 @@
-.menu .container{
-    grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
+.menu .menu-grid {
+  grid-template-columns: repeat(auto-fill, minmax(24rem, 1fr));
 }
 
-
-.card .image{
-    height: 25rem;
-    width: 100%;
-    padding: .5rem;
-    overflow: hidden;
-    position: relative;
+.loading-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(24rem, 1fr));
+  gap: var(--space-3);
 }
 
-.card .image img{
-    height: 100%;
-    width: 100%;
-    border-radius: .5rem;
-    object-fit: fill;
+.skeleton-card {
+  height: 340px;
+  background: linear-gradient(90deg, var(--light-grey) 25%, #e8edf3 50%, var(--light-grey) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+  border-radius: var(--radius);
 }
-
-.card .image .icon{
-    position: absolute;
-    top: .5rem;
-    right: .5rem;
-    height: 3.5rem;
-    width: 3.5rem;
-    text-align: center;
-    font-size: 2rem;
-    background: var(--white);
-    border-radius: 50%;
-    color: var(--black);
-    cursor: pointer;
-    align-items: center;
-    justify-content: center;
-    display: none;
-}
-
-.card:hover{
-    .icon{
-        display: flex;
-    }
-}
-.card .image .icon:hover{
-    background: var(--green);
-    color: var(--white);
-}
-
-.card .content{
-    padding: 2rem;
-    padding-top: 0;
-}
-
-
-
-.card .content .stars{
-    padding: 1rem;
-}
-
-.card .content .stars .star{
-    font-size: 1.7rem;
-    color: var(--green);
-}
-
-.card .content h3{
-    color: var(--black);
-    font-size: 2.5rem;
-} 
-
-
-.card .content .price{
-    color: var(--green);
-    margin-left: 1rem;
-    font-size: 2.5rem;
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
 }

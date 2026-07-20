@@ -1,64 +1,114 @@
-.footer{
-    .container{
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
-        gap: 1.5rem;
-    
-        .wrapper{
-            padding: .5rem 0;
-            font-size: 2.5rem;
-            color: var(--black);
-    
-            a{
-                display: block;
-                padding: .5rem 0;
-                color: var(--light-color);
-                font-size: 1.7rem;
-                margin-top: 5px;
-                &:hover{
-                    color: var(--green);
-                    text-decoration: underline;
-                }
-            }
-    
-            span{
-                display: flex;
-                width: 100%;
-                align-items: center;
-                justify-content: space-evenly;
-    
-                a{
-                    width: 4rem;
-                    height: 4rem;
-                    cursor: pointer;
-                    font-size: 2.5rem;
-                    color: var(--black);
-                    border-radius: 50%;
-                    background: var(--light-grey);
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-    
-                    &:hover{
-                        color: var(--white);
-                        background: var(--green);
-                    }
-                }
-            }
-        }
-    }
-    .credit{
-        text-align: center;
-        border-top: 0.1rem  solid rgba(0, 0, 0, .1);
+.footer {
+  background: var(--black);
+  color: var(--light-color);
+  padding: var(--space-5) 2% var(--space-2);
+  margin-top: var(--space-5);
+
+  .container {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 1.3fr;
+    gap: var(--space-4);
+    align-items: start;
+
+    .brand-col {
+      .footer-logo {
+        display: flex;
+        align-items: center;
+        gap: .6rem;
+        font-weight: 800;
         font-size: 2rem;
-        color: var(--black);
-        padding: 0.5rem;
-        padding-top: 1.5rem;
-        margin-top: 1.5rem;
-    
-        span{
-            color: var(--green);
+        color: var(--white);
+        margin-bottom: var(--space-2);
+        .logo-mark {
+          background: var(--green);
+          color: var(--white);
+          padding: .3rem .7rem;
+          border-radius: var(--radius-sm);
+          font-size: 1.5rem;
         }
+      }
+      p { color: #94a3b8; font-size: 1.4rem; max-width: 32rem; line-height: 1.6; }
+      .socials {
+        display: flex;
+        gap: .8rem;
+        margin-top: var(--space-2);
+        a {
+          width: 4rem;
+          height: 4rem;
+          font-size: 1.7rem;
+          color: var(--white);
+          background: rgba(255,255,255,.08);
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          &:hover { background: var(--green); transform: translateY(-2px); }
+        }
+      }
     }
-    
+
+    .wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: .6rem;
+      h4 {
+        color: var(--white);
+        font-size: 1.6rem;
+        font-weight: 600;
+        margin-bottom: .8rem;
+      }
+      a {
+        color: #94a3b8;
+        font-size: 1.45rem;
+        padding: .2rem 0;
+        &:hover { color: var(--green); padding-left: .3rem; }
+      }
+      p { color: #94a3b8; font-size: 1.4rem; margin-bottom: .8rem; }
+
+      .footer-sub {
+        display: flex;
+        background: rgba(255,255,255,.08);
+        border-radius: var(--radius-sm);
+        overflow: hidden;
+        input {
+          flex: 1;
+          background: transparent;
+          border: none;
+          padding: 1rem 1.2rem;
+          color: var(--white);
+          font-size: 1.4rem;
+          &::placeholder { color: #94a3b8; }
+        }
+        button {
+          background: var(--green);
+          color: var(--white);
+          padding: 0 1.6rem;
+          font-size: 1.4rem;
+          font-weight: 600;
+          &:hover { background: var(--green-dark); }
+        }
+      }
+    }
+  }
+
+  .credit {
+    text-align: center;
+    border-top: 1px solid rgba(255,255,255,.08);
+    padding-top: var(--space-3);
+    margin-top: var(--space-4);
+    font-size: 1.4rem;
+    color: #94a3b8;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .footer .container {
+    grid-template-columns: 1fr 1fr;
+    .brand-col { grid-column: 1 / -1; }
+  }
+}
+@media screen and (max-width: 450px) {
+  .footer .container { grid-template-columns: 1fr; }
 }

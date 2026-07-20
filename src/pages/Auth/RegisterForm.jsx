@@ -1,102 +1,93 @@
-import { useEffect, useState } from 'react';
-import { NavLink, Navigate } from 'react-router-dom';
-import { createUser } from '../../../firebase';  // Importing the createUser function from Firebase
+import { useState } from 'react';
+import { NavLink, Navigate, useNavigate } from 'react-router-dom';
 import './Auth.scss';
+import { useAuth } from '../../lib/AuthContext';
+import { useToast } from '../../lib/ToastContext';
+import { FaGoogle, FaEye, FaEyeSlash } from 'react-icons/fa';
 
-const RegisterForm = ({ user }) => {
-    const [username, setUsername] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+export default function RegisterForm() {
+  const [fullName, setFullName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirm, setConfirm] = useState('');
+  const [showPass, setShowPass] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
+  const { user, signUp, signInWithGoogle } = useAuth();
+  const { notify } = useToast();
+  const navigate = useNavigate();
 
-    const [success, setSuccess] = useState(null);
-    const [error, setError] = useState(null);
+  if (user) return <Navigate to="/" replace />;
 
-    const handleRegister = async (e) => {
-        e.preventDefault();
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    if (!fullName || !email || !password) { notify('All fields are required.', 'warning'); return; }
+    if (password.length < 6) { notify('Password must be at least 6 characters.', 'warning'); return; }
+    if (password !== confirm) { notify('Passwords do not match.', 'error'); return; }
+    setLoading(true);
+    try {
+      await signUp(email, password, fullName);
+      notify('Account created! Welcome to KPL FoodCoop.', 'success');
+      navigate('/');
+    } catch (err) {
+      notify(err.message || 'Registration failed.', 'error');
+    } finally {
+      setLoading(false);
+    }
+  };
 
-        var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-        var passw = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
+  const handleGoogle = async () => {
+    setGoogleLoading(true);
+    try {
+      await signInWithGoogle();
+    } catch (err) {
+      notify('Google sign-in failed.', 'error');
+      setGoogleLoading(false);
+    }
+  };
 
-        if (email && password) {
-            if (email.match(mailformat)) {
-                if (password.match(passw)) {
-                    // Calling the createUser function from Firebase
-                    const { error, message } = await createUser(username, email, password, setSuccess, setError);
-                    if (error) {
-                        setError(message);
-                    } else {
-                        setSuccess(message);
-                        window.history.back();  // Redirect to the previous page after successful registration
-                    }
-                } else {
-                    setError('Wrong password format!');
-                    return;
-                }
-            } else {
-                setError('You have entered an invalid email address!');
-                return;
-            }
-        } else {
-            setError('Enter email and password');
-            return;
-        }
-    };
-
-    useEffect(() => {
-        setTimeout(() => {
-            error && setError(null);
-            success && setSuccess(null);
-        }, 2000);
-    }, [success, error]);
-
-    return (
-        <div className='auth'>
-            {user && (
-                <Navigate to="/profile" replace={true} />
-            )}
-            <form onSubmit={handleRegister}>
-                <h1>Get Started</h1>
-                <input
-                    type="text"
-                    id='username'
-                    placeholder='Username'
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    required
-                />
-                <input
-                    type="email"
-                    id='email'
-                    placeholder='Email'
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                />
-                <input
-                    type="password"
-                    id='password'
-                    placeholder='Password'
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                />
-                <input
-                    type="password"
-                    id='repeat-password'
-                    placeholder='Repeat Password'
-                    required
-                />
-                <button className='btn' type='submit' title='submit'>Register</button>
-                {
-                    error && <p className='error'>{error}!</p>
-                }
-                {
-                    success && <p className='success'>{success}</p>
-                }
-                <p>Already have an account? <NavLink to={"/login"}>Login</NavLink></p>
-            </form>
+  return (
+    <div className="auth-page">
+      <div className="auth-card">
+        <div className="auth-hero">
+          <div className="logo-mark">KPL</div>
+          <h1>Get Started</h1>
+          <p>Create your free account to start shopping.</p>
         </div>
-    );
-};
 
-export default RegisterForm;
+        <form onSubmit={handleRegister}>
+          <div className="field">
+            <label>Full Name</label>
+            <input type="text" placeholder="Jane Doe" value={fullName} onChange={(e) => setFullName(e.target.value)} required />
+          </div>
+          <div className="field">
+            <label>Email</label>
+            <input type="email" placeholder="you@email.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
+          </div>
+          <div className="field">
+            <label>Password</label>
+            <div className="password-wrap">
+              <input type={showPass ? 'text' : 'password'} placeholder="At least 6 characters" value={password} onChange={(e) => setPassword(e.target.value)} required />
+              <button type="button" className="toggle-pass" onClick={() => setShowPass(!showPass)}>{showPass ? <FaEyeSlash /> : <FaEye />}</button>
+            </div>
+          </div>
+          <div className="field">
+            <label>Confirm Password</label>
+            <input type={showPass ? 'text' : 'password'} placeholder="Re-enter password" value={confirm} onChange={(e) => setConfirm(e.target.value)} required />
+          </div>
+          <button className="btn btn-green btn-block btn-lg" type="submit" disabled={loading}>
+            {loading ? <span className="spinner" /> : 'Create Account'}
+          </button>
+        </form>
+
+        <div className="divider"><span>or</span></div>
+
+        <button className="btn btn-secondary btn-block btn-lg google-btn" onClick={handleGoogle} disabled={googleLoading}>
+          <FaGoogle /> {googleLoading ? 'Connecting...' : 'Continue with Google'}
+        </button>
+
+        <p className="switch-auth">Already have an account? <NavLink to="/login">Login</NavLink></p>
+      </div>
+    </div>
+  );
+}

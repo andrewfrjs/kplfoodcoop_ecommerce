@@ -1,140 +1,110 @@
-import { useEffect, useState } from 'react'
-import {   createBrowserRouter,
-  RouterProvider,
-  Outlet, } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { createBrowserRouter, RouterProvider, Outlet, Navigate } from 'react-router-dom';
+import { FaArrowUp } from 'react-icons/fa';
 
 import Search from './components/Search/Search';
 import Footer from './components/Footer/Footer';
-import Single from './components/Single/Single';
 import Loader from './components/Loader/Loader';
+import Topnav from './components/Topnav/Topnav';
 
 import Home from './pages/Home/Home';
 import About from './pages/About/About';
 import Contact from './pages/Contact/Contact';
-
-import Profile from './pages/Profile/Profile';
-import EditProfile from './pages/Profile/EditProfile';
-
-
-
-import { FaArrowUp } from 'react-icons/fa';
-import LoginForm from './pages/Auth/LoginForm';
-import RegisterForm from './pages/Auth/RegisterForm';
-import { UserContext } from './UserContext';
 import Blogs from './pages/Blogs/Blogs';
 import SingleBlog from './pages/Blogs/SingleBlog';
 import Store from './pages/Store/Store';
-
-import { useAuth } from '../firebase';
+import Single from './pages/Single/Single';
 import Cart from './pages/Cart/Cart';
-import Topnav from './components/Topnav/Topnav';
+import Checkout from './pages/Checkout/Checkout';
+import Orders from './pages/Orders/Orders';
+import Profile from './pages/Profile/Profile';
 import NotFound from './pages/NotFound/NotFound';
-import Order from './pages/Order/Order';
 
+import LoginForm from './pages/Auth/LoginForm';
+import RegisterForm from './pages/Auth/RegisterForm';
 
-const Layout = () => {
+import AdminLayout from './pages/Admin/AdminLayout';
+import AdminDashboard from './pages/Admin/AdminDashboard';
+import AdminProducts from './pages/Admin/AdminProducts';
+import AdminOrders from './pages/Admin/AdminOrders';
+import AdminUsers from './pages/Admin/AdminUsers';
+import AdminBlogs from './pages/Admin/AdminBlogs';
 
-  return (
-    <>
-      <Topnav />
-      <Search />
-      <Outlet />
-      <Footer />
-      <button className="btn-top" onClick={() => {window.scrollTo(0, 0);}} >
-        <FaArrowUp/>
-      </button>
-    </>
-  )
+import { AuthProvider, useAuth } from './lib/AuthContext';
+import { CartProvider } from './lib/CartContext';
+import { ToastProvider } from './lib/ToastContext';
+
+function RequireAdmin({ children }) {
+  const { user, profile, loading } = useAuth();
+  if (loading) return <Loader />;
+  if (!user) return <Navigate to="/login" replace />;
+  if (profile?.role !== 'admin') return <Navigate to="/" replace />;
+  return children;
 }
+
+const Layout = () => (
+  <>
+    <Topnav />
+    <Search />
+    <Outlet />
+    <Footer />
+    <button className="btn-top" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+      <FaArrowUp />
+    </button>
+  </>
+);
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: '/',
     element: <Layout />,
     children: [
-      {
-        path: "/",
-        element: <Home/>
-      },
-      {
-        path: "/shop",
-        element: <Store/>
-      },
-      {
-        path: "/shop/:id",
-        element: <Single />
-      },
-      {
-        path: "/blogs",
-        element: <Blogs/>
-      },
-      {
-        path: "/blogs/:id",
-        element: <SingleBlog />
-      },
-      {
-        path: "/about-us",
-        element: <About/>
-      },
-      {
-        path: "/contact-us",
-        element: <Contact />
-      },
-      {
-        path: "/cart",
-        element: <Cart/>
-      },
-      {
-        path: "/checkout",
-        element: <Order/>
-      },
-    ]
+      { path: '/', element: <Home /> },
+      { path: '/shop', element: <Store /> },
+      { path: '/shop/:id', element: <Single /> },
+      { path: '/blogs', element: <Blogs /> },
+      { path: '/blogs/:id', element: <SingleBlog /> },
+      { path: '/about-us', element: <About /> },
+      { path: '/contact-us', element: <Contact /> },
+      { path: '/cart', element: <Cart /> },
+      { path: '/checkout', element: <Checkout /> },
+      { path: '/orders', element: <Orders /> },
+      { path: '/profile', element: <Profile /> },
+    ],
   },
+  { path: '/login', element: <LoginForm /> },
+  { path: '/get-started', element: <RegisterForm /> },
   {
-    path: "/login",
-    element: <LoginForm />
+    path: '/admin',
+    element: <RequireAdmin><AdminLayout /></RequireAdmin>,
+    children: [
+      { path: '', element: <AdminDashboard /> },
+      { path: 'products', element: <AdminProducts /> },
+      { path: 'orders', element: <AdminOrders /> },
+      { path: 'users', element: <AdminUsers /> },
+      { path: 'blogs', element: <AdminBlogs /> },
+    ],
   },
-  {
-    path: "/get-started",
-    element: <RegisterForm/>
-  },
-  {
-    path: "/profile/:username",
-    element:<Profile />
-  },
-  {
-        path: "/profile/:username/edit",
-        element: <EditProfile/>
-  },
-  {
-    path: "*",
-    element: <NotFound/>
-  }
-])
+  { path: '*', element: <NotFound /> },
+]);
 
 function App() {
   const [loading, setLoading] = useState(true);
-  const signedUser = useAuth();
-  const [user, setUser] = useState(null);
-
   useEffect(() => {
-    setUser(signedUser);
-  }, [signedUser]);
-  
-  useEffect(() => {
-    setTimeout(() =>{
-      setLoading(!loading);
-    }, 1500);
+    const t = setTimeout(() => setLoading(false), 900);
+    return () => clearTimeout(t);
   }, []);
-  
+
   return (
-    <UserContext.Provider value={{user, setUser}} >
-      {
-        loading && <Loader />
-      }
-      {!loading && <RouterProvider router={router} />}
-    </UserContext.Provider>
-  )
+    <ToastProvider>
+      <AuthProvider>
+        <CartProvider>
+          {loading && <Loader />}
+          {!loading && <RouterProvider router={router} />}
+        </CartProvider>
+      </AuthProvider>
+    </ToastProvider>
+  );
 }
 
-export default App
+export default App;

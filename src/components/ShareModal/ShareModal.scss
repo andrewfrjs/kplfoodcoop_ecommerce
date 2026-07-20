@@ -1,165 +1,89 @@
-.share-modal{
-    position: absolute;
-    top: .5rem;
-    right: .5rem;
-    transform: translate(-10%, 10%) scale(1.2);
-    background: var(--white);
-    padding: 5px;
-    border-radius: 10px;
-    width: 75%;
-    box-shadow: var(--box-shadow);
-    z-index: 1000;
+.share-modal {
+  position: absolute;
+  top: 4.5rem;
+  right: 0;
+  background: var(--white);
+  padding: var(--space-2);
+  border-radius: var(--radius);
+  width: 320px;
+  box-shadow: var(--box-shadow-lg);
+  z-index: 100;
+  border: 1px solid var(--border);
 
-    p{
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
+  p {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--black);
+  }
+
+  .close {
+    width: 3rem;
+    height: 3rem;
+    padding: .5rem;
+    border-radius: 50%;
+    color: var(--light-color);
+    background: var(--light-grey);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    &:hover { background: var(--green); color: var(--white); }
+  }
+
+  .icons {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 1.2rem 0;
+    li {
+      width: 4rem;
+      height: 4rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: var(--light-grey);
+      cursor: pointer;
+      transition: all .2s ease;
+      button { background: transparent; display: flex; }
+      * { font-size: 1.9rem; display: flex; }
+      &:hover { transform: scale(1.08); * { color: var(--white); } }
     }
+    .facebook:hover { background: #1877F2; }
+    .twitter:hover { background: #000; }
+    .linkedin:hover { background: #0077B5; }
+    .whatsapp:hover { background: #25D366; }
+    .telegram:hover { background: #0088cc; }
+  }
 
-    .close{
-        width: 2.5rem;
-        height: 2.5rem;
-        padding: .5rem;
-        border-radius: 50%;
-        color: var(--light-color);
-        background: var(--box-shadow);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 50%;
-        cursor: pointer;
-        color: var(--black);
-        background: var(--light-grey);
-    
-        &:hover{
-            background: var(--green);
-        }
+  .field {
+    height: 4rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 0 .5rem 0 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    input {
+      border: none;
+      outline: none;
+      height: 100%;
+      flex: 1;
+      font-size: 1.3rem;
+      color: var(--light-color);
+      background: transparent;
     }
-
-    .content-share{
-        .icons{
-            width: 100%;
-            margin: 10px 0 15px 0;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        p{
-            font-size: 12px;
-        }
-
-        a{
-            margin-left: .5rem;
-            height: 3.5rem;
-            width: 3.5rem;
-            border: 1px solid transparent;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            transition: all 0.2s ease-in-out;
-            cursor: pointer;
-            border-radius: 50%;
-            background: var(--light-grey);
-        
-            *{
-                font-size: 20px;
-                transition: all 0.2s ease-in-out;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-        
-            &:hover{
-                border-color: transparent;
-                *{
-                    transform: scale(1.05);
-                    color: var(--white);
-                }
-            }
-        }
-
-        .field{
-            height: 3rem;
-            border: 1px solid #e1e1e1;
-            border-radius: 4px;
-            padding: 0 2px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        
-            .link-class{
-                width: 2.5rem;
-                text-align: center;
-                font-size: 1.6rem;
-            }
-        
-            input{
-                border: none;
-                outline: none;
-                height: 100%;
-                width: 100%;
-                font-size: 13px;
-            }
-            
-            button{
-                height: 100%;
-                padding: 3px 10px;
-                border-radius: 4px;
-                background: var(--black);
-                color: var(--white);
-                cursor: pointer;
-                font-weight: 300;
-                border: 2px solid transparent;
-                overflow: hidden;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 1.7rem;
-            }
-        }
-
-        .facebook{
-            color: #1877F2;
-            border-color: #b7d4fb;
-            &:hover{
-                background: #1877F2;
-            }
-        }
-
-        .twitter{
-            color: #46C1F6;
-            border-color: #b6e7fc;
-
-            &:hover{
-                background: #46C1F6;
-            }
-        }
-
-        .linkedin{
-            color: #0077B5;
-            border-color: #b6e7fc;
-            &:hover{
-                background: #0077B5;
-            }
-        }
-
-        .whatsapp{
-            color: #25D366;
-            border-color: #bef4d2;
-        
-            &:hover{
-                background: #25D366;
-            }
-        }
-
-        .telegram{
-            color: #0088cc;
-            border-color: #b3e6ff;
-            &:hover{
-                background: #0088cc;
-            }
-        }
+    button {
+      height: 100%;
+      padding: 0 1.2rem;
+      border-radius: var(--radius-sm);
+      background: var(--black);
+      color: var(--white);
+      font-size: 1.5rem;
+      &:hover { background: var(--green); }
     }
+  }
 }
