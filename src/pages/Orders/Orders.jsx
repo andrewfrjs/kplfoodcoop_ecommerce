@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import './Orders.scss';
 import { useAuth } from '../../lib/AuthContext';
-import { fetchOrders } from '../../lib/api';
+import { useToast } from '../../lib/ToastContext';
+import { fetchOrders, cancelOrder } from '../../lib/api';
 import { Link } from 'react-router-dom';
-import { FaBoxOpen, FaChevronDown, FaChevronUp } from 'react-icons/fa';
+import { FaBoxOpen, FaChevronDown, FaChevronUp, FaTimesCircle } from 'react-icons/fa';
 
 const STATUS_COLORS = {
   pending: 'badge-warning',
@@ -15,14 +16,30 @@ const STATUS_COLORS = {
 
 export default function Orders() {
   const { user } = useAuth();
+  const { notify } = useToast();
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [expanded, setExpanded] = useState(null);
+  const [cancelling, setCancelling] = useState(null);
 
   useEffect(() => {
     if (user) fetchOrders(user.id).then((o) => { setOrders(o); setLoading(false); });
     else setLoading(false);
   }, [user]);
+
+  const handleCancel = async (orderId) => {
+    if (!confirm('Cancel this order? This cannot be undone.')) return;
+    setCancelling(orderId);
+    try {
+      await cancelOrder(orderId);
+      setOrders((prev) => prev.map((o) => o.id === orderId ? { ...o, status: 'cancelled' } : o));
+      notify('Order cancelled.', 'info');
+    } catch (err) {
+      notify(err.message || 'Could not cancel order. It may already be processed.', 'error');
+    } finally {
+      setCancelling(null);
+    }
+  };
 
   if (!user) {
     return (
@@ -86,6 +103,13 @@ export default function Orders() {
                     </div>
                   ))}
                 </div>
+                {o.status === 'pending' && (
+                  <div className="order-actions">
+                    <button className="btn" style={{ background: 'var(--white)', color: 'var(--error)', borderColor: 'var(--error)' }} onClick={() => handleCancel(o.id)} disabled={cancelling === o.id}>
+                      {cancelling === o.id ? <span className="spinner" /> : <><FaTimesCircle /> Cancel Order</>}
+                    </button>
+                  </div>
+                )}
               </div>
             )}
           </div>

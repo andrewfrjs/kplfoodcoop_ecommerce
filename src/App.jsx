@@ -28,10 +28,12 @@ import AdminLayout from './pages/Admin/AdminLayout';
 import AdminDashboard from './pages/Admin/AdminDashboard';
 import AdminProducts from './pages/Admin/AdminProducts';
 import AdminOrders from './pages/Admin/AdminOrders';
+import AdminCarts from './pages/Admin/AdminCarts';
 import AdminUsers from './pages/Admin/AdminUsers';
 import AdminWishlists from './pages/Admin/AdminWishlists';
 import AdminBlogs from './pages/Admin/AdminBlogs';
 import AdminNotifications from './pages/Admin/AdminNotifications';
+import AdminContacts from './pages/Admin/AdminContacts';
 
 import { AuthProvider, useAuth } from './lib/AuthContext';
 import { CartProvider } from './lib/CartContext';
@@ -87,10 +89,12 @@ const router = createBrowserRouter([
       { path: '', element: <AdminDashboard /> },
       { path: 'products', element: <AdminProducts /> },
       { path: 'orders', element: <AdminOrders /> },
+      { path: 'carts', element: <AdminCarts /> },
       { path: 'users', element: <AdminUsers /> },
       { path: 'wishlists', element: <AdminWishlists /> },
       { path: 'blogs', element: <AdminBlogs /> },
       { path: 'notifications', element: <AdminNotifications /> },
+      { path: 'contacts', element: <AdminContacts /> },
     ],
   },
   { path: '*', element: <NotFound /> },

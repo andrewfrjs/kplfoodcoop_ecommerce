@@ -104,6 +104,16 @@
     }
     .expand-row td { padding: 0; background: var(--lighter-grey); }
     .notif-msg { max-width: 24rem; color: var(--light-color); font-size: 1.3rem; }
+    .contact-msg {
+      max-width: 28rem;
+      color: var(--light-color);
+      font-size: 1.35rem;
+      cursor: pointer;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      &:hover { color: var(--green); }
+    }
   }
 
   .empty-row { padding: var(--space-4); text-align: center; color: var(--light-color); }
@@ -220,9 +230,92 @@
   .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-2); }
   .checkbox-row { display: flex; gap: 2rem; margin-bottom: var(--space-2); label { display: inline-flex; align-items: center; gap: .6rem; font-size: 1.45rem; cursor: pointer; } input { accent-color: var(--green); } }
   .form-actions { display: flex; gap: 1rem; margin-top: var(--space-2); .spinner { width: 18px; height: 18px; border-width: 2px; border-color: rgba(255,255,255,.4); border-top-color: var(--white); } }
+  .contact-detail {
+    padding: var(--space-3);
+    .contact-meta {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-2);
+      margin-bottom: var(--space-2);
+      strong { display: block; font-size: 1.25rem; color: var(--light-color); text-transform: uppercase; margin-bottom: .3rem; }
+      a, span { font-size: 1.4rem; color: var(--black-soft); }
+      a { color: var(--green); &:hover { text-decoration: underline; } }
+    }
+    .contact-message {
+      background: var(--lighter-grey);
+      border-radius: var(--radius);
+      padding: var(--space-2);
+      margin-bottom: var(--space-2);
+      strong { display: block; font-size: 1.4rem; margin-bottom: .6rem; }
+      p { font-size: 1.5rem; line-height: 1.6; color: var(--black-soft); }
+    }
+  }
 }
+
+/* Carts page */
+.tabs {
+  display: flex;
+  gap: .5rem;
+  button {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    padding: .9rem 1.4rem;
+    border-radius: var(--radius-sm);
+    background: var(--white);
+    border: 1px solid var(--border);
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--light-color);
+    &:hover { color: var(--green); border-color: var(--green); }
+    &.active { background: var(--green); color: var(--white); border-color: var(--green); }
+  }
+}
+
+.carts-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  .cart-group {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    .cart-group-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--space-2) var(--space-3);
+      background: var(--lighter-grey);
+      border-bottom: 1px solid var(--border);
+      gap: 1rem;
+      flex-wrap: wrap;
+      strong { font-size: 1.6rem; }
+      .sub { display: block; font-size: 1.3rem; color: var(--light-color); }
+      .cart-group-actions { display: flex; align-items: center; gap: .8rem; .cart-total { font-weight: 700; color: var(--green); font-size: 1.5rem; } }
+    }
+    .cart-items-list { padding: var(--space-2); display: flex; flex-direction: column; gap: .6rem; }
+    .cart-row {
+      display: grid;
+      grid-template-columns: 48px 1fr auto auto 36px;
+      gap: 1rem;
+      align-items: center;
+      padding: .8rem 1rem;
+      background: var(--lighter-grey);
+      border-radius: var(--radius-sm);
+      img { width: 48px; height: 48px; border-radius: var(--radius-sm); object-fit: cover; }
+      .title { font-size: 1.4rem; font-weight: 500; }
+      .qty { font-size: 1.3rem; color: var(--light-color); }
+      .line { font-size: 1.4rem; font-weight: 600; }
+    }
+  }
+}
+
+.mb-3 { margin-bottom: var(--space-3); }
 
 @media screen and (max-width: 600px) {
   .admin-page .field-row, .modal-box .field-row { grid-template-columns: 1fr; }
   .stats-grid { grid-template-columns: 1fr; }
+  .modal-box .contact-detail .contact-meta { grid-template-columns: 1fr; }
+  .carts-list .cart-row { grid-template-columns: 40px 1fr auto 36px; .qty { display: none; } }
 }

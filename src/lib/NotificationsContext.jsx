@@ -1,9 +1,9 @@
 import { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { supabase } from './supabaseClient';
 import { useAuth } from './AuthContext';
-import { fetchNotifications, markNotificationRead as apiMarkRead, markAllNotificationsRead } from './api';
+import { fetchNotifications, markNotificationRead as apiMarkRead, markAllNotificationsRead, deleteNotification as apiDeleteNotif } from './api';
 
-const NotificationsContext = createContext({ notifications: [], unreadCount: 0, refresh: async () => {}, markRead: async () => {}, markAllRead: async () => {} });
+const NotificationsContext = createContext({ notifications: [], unreadCount: 0, refresh: async () => {}, markRead: async () => {}, markAllRead: async () => {}, deleteNotif: async () => {} });
 
 export function NotificationsProvider({ children }) {
   const { user } = useAuth();
@@ -48,8 +48,15 @@ export function NotificationsProvider({ children }) {
     } catch {}
   }, [user]);
 
+  const deleteNotif = useCallback(async (id) => {
+    try {
+      await apiDeleteNotif(id);
+      setNotifications((prev) => prev.filter((n) => n.id !== id));
+    } catch {}
+  }, []);
+
   const unreadCount = notifications.filter((n) => !n.is_read).length;
-  const value = { notifications, unreadCount, loading, refresh, markRead, markAllRead };
+  const value = { notifications, unreadCount, loading, refresh, markRead, markAllRead, deleteNotif };
   return <NotificationsContext.Provider value={value}>{children}</NotificationsContext.Provider>;
 }
 

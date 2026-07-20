@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Outlet, NavLink, Navigate, Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../../lib/AuthContext';
-import { FaTachometerAlt, FaBox, FaShoppingBag, FaUsers, FaFileAlt, FaHome, FaSignOutAlt, FaHeart, FaBell, FaBars, FaTimes } from 'react-icons/fa';
+import { FaTachometerAlt, FaBox, FaShoppingBag, FaUsers, FaFileAlt, FaHome, FaSignOutAlt, FaHeart, FaBell, FaBars, FaTimes, FaShoppingCart, FaEnvelope } from 'react-icons/fa';
 import './AdminLayout.scss';
 
 export default function AdminLayout() {
@@ -33,10 +33,12 @@ export default function AdminLayout() {
     { to: '/admin', label: 'Dashboard', icon: <FaTachometerAlt />, end: true },
     { to: '/admin/products', label: 'Products', icon: <FaBox /> },
     { to: '/admin/orders', label: 'Orders', icon: <FaShoppingBag /> },
+    { to: '/admin/carts', label: 'Carts', icon: <FaShoppingCart /> },
     { to: '/admin/users', label: 'Users', icon: <FaUsers /> },
     { to: '/admin/wishlists', label: 'Wishlists', icon: <FaHeart /> },
     { to: '/admin/blogs', label: 'Blog Posts', icon: <FaFileAlt /> },
     { to: '/admin/notifications', label: 'Notifications', icon: <FaBell /> },
+    { to: '/admin/contacts', label: 'Contacts', icon: <FaEnvelope /> },
   ];
 
   return (

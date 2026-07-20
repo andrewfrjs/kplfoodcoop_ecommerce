@@ -264,3 +264,62 @@ export async function deleteNotification(id) {
   const { error } = await supabase.from('notifications').delete().eq('id', id);
   if (error) throw error;
 }
+
+// User cancels their own order (only allowed when pending — enforced by RLS)
+export async function cancelOrder(orderId) {
+  const { data, error } = await supabase
+    .from('orders')
+    .update({ status: 'cancelled' })
+    .eq('id', orderId)
+    .select()
+    .maybeSingle();
+  if (error) throw error;
+  return data;
+}
+
+// Admin: all cart items grouped by user
+export async function fetchAllCarts() {
+  const { data, error } = await supabase
+    .from('cart_items')
+    .select('id, user_id, product_id, quantity, updated_at, products(title, slug, price, image_url), profiles(email, full_name)')
+    .order('updated_at', { ascending: false });
+  if (error) throw error;
+  return data || [];
+}
+
+export async function deleteCartItem(id) {
+  const { error } = await supabase.from('cart_items').delete().eq('id', id);
+  if (error) throw error;
+}
+
+export async function clearUserCart(userId) {
+  const { error } = await supabase.from('cart_items').delete().eq('user_id', userId);
+  if (error) throw error;
+}
+
+// Admin: abandoned carts via RPC
+export async function fetchAbandonedCarts(hoursOld = 24) {
+  const { data, error } = await supabase.rpc('get_abandoned_carts', { hours_old: hoursOld });
+  if (error) throw error;
+  return data || [];
+}
+
+export async function notifyUser(userId, title, message, type = 'info') {
+  const { error } = await supabase.from('notifications').insert({ user_id: userId, title, message, type });
+  if (error) throw error;
+}
+
+// Admin: contacts management
+export async function fetchAllContacts() {
+  const { data, error } = await supabase
+    .from('contacts')
+    .select('*')
+    .order('created_at', { ascending: false });
+  if (error) throw error;
+  return data || [];
+}
+
+export async function deleteContact(id) {
+  const { error } = await supabase.from('contacts').delete().eq('id', id);
+  if (error) throw error;
+}

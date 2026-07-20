@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import './Topnav.scss';
-import { FaBars, FaBell, FaHeart, FaSearch, FaShoppingCart, FaUserCircle } from 'react-icons/fa';
+import { FaBars, FaBell, FaHeart, FaSearch, FaShoppingCart, FaTrash, FaUserCircle } from 'react-icons/fa';
 import { FaXmark } from 'react-icons/fa6';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../lib/AuthContext';
@@ -17,10 +17,15 @@ export default function Topnav() {
   const { user, profile, signOut } = useAuth();
   const { count } = useCart();
   const { count: wishCount } = useWishlist();
-  const { notifications, unreadCount, markRead, markAllRead } = useNotifications();
+  const { notifications, unreadCount, markRead, markAllRead, deleteNotif } = useNotifications();
   const navigate = useNavigate();
   const notifRef = useRef(null);
   const userRef = useRef(null);
+
+  const handleDeleteNotif = async (e, id) => {
+    e.stopPropagation();
+    await deleteNotif(id);
+  };
 
   const handleToggle = () => {
     setOpened(!opened);
@@ -116,6 +121,7 @@ export default function Topnav() {
                         {n.message && <span>{n.message}</span>}
                         <em>{new Date(n.created_at).toLocaleString()}</em>
                       </div>
+                      <button className="notif-delete" onClick={(e) => handleDeleteNotif(e, n.id)} title="Delete"><FaTrash /></button>
                     </div>
                   ))}
                 </div>
