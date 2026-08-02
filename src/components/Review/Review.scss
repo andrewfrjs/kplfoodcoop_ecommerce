@@ -1,59 +1,71 @@
-.review {
-  background: var(--white);
-  border-radius: var(--radius-lg);
-  padding: var(--space-4);
-  box-shadow: var(--box-shadow-sm);
-
-  .review-grid {
+.review .wrapper{
+    width: 100%;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(28rem, 1fr));
-    gap: var(--space-3);
-  }
-
-  .slide {
-    padding: var(--space-3);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
+    grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
+    gap: 1.5rem;
+    overflow-x: scroll;
+    height: fit-content;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px;
     position: relative;
-    background: var(--lighter-grey);
+    scroll-margin: 1px;
 
-    .quote {
-      position: absolute;
-      top: 1.5rem;
-      right: 1.5rem;
-      font-size: 3rem;
-      color: var(--green-light);
+    &::-webkit-scrollbar{
+        width: 1px;
+        display: none;
+    }
+    &::-webkit-scrollbar-track{
+        display: none;
+    }
+    &::-webkit-scrollbar-thumb{
+        background: var(--black);
+        border-radius: 2px;
+    }
+}
+
+
+.review .slide{
+    width: 100%;
+    padding: 2rem;
+    box-shadow: var(--box-shadow);
+    border: .1rem solid rgba(0, 0, 0, 0.2);
+    border-radius: .5rem;
+    position: relative;
+    min-width: 280px;
+
+    span{
+        position: absolute;
+        top: .5rem;
+        right: .5rem;
+        font-size: 5rem;
+        color: #ccc;
     }
 
-    .stars { margin-bottom: 1rem; }
-
-    p {
-      font-size: 1.5rem;
-      color: var(--black-soft);
-      line-height: 1.6;
-      margin-bottom: var(--space-2);
-    }
-
-    .user {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      .avatar {
-        width: 5rem;
-        height: 5rem;
-        border-radius: 50%;
-        background: var(--green);
-        color: var(--white);
-        font-size: 2rem;
-        font-weight: 700;
+    .user{
         display: flex;
+        gap: 1.5rem;
         align-items: center;
-        justify-content: center;
-      }
-      .user-info {
-        h3 { color: var(--black); font-size: 1.6rem; }
-        span { color: var(--light-color); font-size: 1.3rem; }
-      }
+        padding-bottom: 1.5rem;
+
+        img{
+            height: 7rem;
+            width: 7rem;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        h3{
+            color: var(--black);
+            font-size: 2rem;
+            padding-bottom: 0.5rem;
+        }
     }
-  }
+}
+
+@media screen and (max-width: 605px){
+    .review-slider .wrapper .slide{
+        min-width: 100%;
+    }
 }

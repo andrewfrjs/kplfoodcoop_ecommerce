@@ -1,93 +1,82 @@
-import { useState } from 'react';
-import { submitContact } from '../../lib/api';
-import { useToast } from '../../lib/ToastContext';
+import { useState, useEffect } from 'react';
+import { addContact } from '../../../firebase';  // Importing the function to add contact message to Firestore
 import './Contact.scss';
+import ThanksModal from '../../components/ThanksModal/ThanksModal';
 
-export default function Contact() {
-  const [form, setForm] = useState({ name: '', email: '', phone: '', message: '' });
-  const [loading, setLoading] = useState(false);
-  const { notify } = useToast();
+const Contact = () => {
+    const [Name, setName] = useState('');
+    const [Email, setEmail] = useState('');
+    const [Phone, setPhone] = useState('');
+    const [Message, setMessage] = useState('');
+    const [success, setSuccess] = useState(null);
+    const [error, setError] = useState(null);
+    const [toast, setToast] = useState(null);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!form.name || !form.email || !form.message) { notify('Please fill all required fields.', 'warning'); return; }
-    setLoading(true);
-    try {
-      await submitContact(form);
-      notify('Message sent! We will get back to you soon.', 'success');
-      setForm({ name: '', email: '', phone: '', message: '' });
-    } catch (err) {
-      notify('Could not send message. Please try again.', 'error');
-    } finally {
-      setLoading(false);
-    }
-  };
+    const handleSubmit = async (e) => {
+        e.preventDefault();
 
-  const set = (k) => (e) => setForm({ ...form, [k]: e.target.value });
+        if (Name && Email && Message) {
+            try {
+                // Call the function to add the contact message to Firestore
+                await addContact({ Name, Email, Phone, Message }, setToast, setError);
+                setSuccess("Your message was submitted successfully!");
+            } catch (err) {
+                setError("There was an error submitting your message. Please try again.");
+            }
+        } else {
+            setError("All fields are required.");
+        }
+    };
 
-  return (
-    <section className="contact">
-      <div className="section-header">
-        <p className="sub-heading">We're here to help</p>
-        <h1 className="heading">Get in Touch</h1>
-      </div>
+    useEffect(() => {
+        setTimeout(() => {
+            error && setError(null);
+            success && setSuccess(null);
+        }, 2000);
+    }, [success, error]);
 
-      <div className="contact-layout">
-        <div className="contact-info">
-          <div className="info-item">
-            <span className="icon">📍</span>
-            <div>
-              <strong>Visit us</strong>
-              <p>Nairobi, Kenya</p>
-            </div>
-          </div>
-          <div className="info-item">
-            <span className="icon">📞</span>
-            <div>
-              <strong>Call us</strong>
-              <p>+254 797 814 027</p>
-            </div>
-          </div>
-          <div className="info-item">
-            <span className="icon">✉️</span>
-            <div>
-              <strong>Email us</strong>
-              <p>hello@kplfoodcoop.co.ke</p>
-            </div>
-          </div>
-          <div className="info-item">
-            <span className="icon">⏰</span>
-            <div>
-              <strong>Hours</strong>
-              <p>Mon - Sat: 8am - 8pm</p>
-            </div>
-          </div>
+    return (
+        <div className='contact'>
+            {toast && <ThanksModal title={"Thank you!"} text={toast} runFunction={setToast}/>}
+            <form onSubmit={handleSubmit}>
+                <h1>GET IN TOUCH</h1>
+                <input
+                    type="text"
+                    id='name'
+                    placeholder='Your Name'
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                />
+                <input
+                    type="email"
+                    id='email'
+                    placeholder='Email'
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                />
+                <input
+                    type='tel'
+                    id='phone'
+                    placeholder='Phone Number'
+                    onChange={(e) => setPhone(e.target.value)}
+                />
+                <textarea
+                    id="message"
+                    rows="4"
+                    placeholder='How can we help you?'
+                    onChange={(e) => setMessage(e.target.value)}
+                    required
+                ></textarea>
+                <button className='btn' type='submit' title='submit'>Send</button>
+                {
+                    error && <p className='error'>{error}!</p>
+                }
+                {
+                    success && <p className='success'>{success}</p>
+                }
+            </form>
         </div>
-
-        <form className="contact-form" onSubmit={handleSubmit}>
-          <div className="field-row">
-            <div className="field">
-              <label>Name *</label>
-              <input value={form.name} onChange={set('name')} required />
-            </div>
-            <div className="field">
-              <label>Email *</label>
-              <input type="email" value={form.email} onChange={set('email')} required />
-            </div>
-          </div>
-          <div className="field">
-            <label>Phone</label>
-            <input value={form.phone} onChange={set('phone')} placeholder="Optional" />
-          </div>
-          <div className="field">
-            <label>Message *</label>
-            <textarea rows="5" value={form.message} onChange={set('message')} required />
-          </div>
-          <button className="btn btn-green btn-lg" type="submit" disabled={loading}>
-            {loading ? <span className="spinner" /> : 'Send Message'}
-          </button>
-        </form>
-      </div>
-    </section>
-  );
+    );
 }
+
+export default Contact;

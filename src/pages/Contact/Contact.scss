@@ -1,53 +1,32 @@
-.contact {
-  .contact-layout {
-    display: grid;
-    grid-template-columns: 1fr 1.4fr;
-    gap: var(--space-4);
-    align-items: start;
-  }
-
-  .contact-info {
+.contact{
+    width: inherit;
+    min-height: 100vh;
     display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
-    .info-item {
-      display: flex;
-      align-items: center;
-      gap: 1.4rem;
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: var(--space-2);
-      .icon {
-        width: 5rem;
-        height: 5rem;
-        border-radius: 50%;
-        background: var(--green-light);
-        font-size: 2.2rem;
+    align-items: center;
+    justify-content: center;
+
+    form{
         display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-      }
-      strong { display: block; font-size: 1.6rem; }
-      p { font-size: 1.4rem; color: var(--light-color); }
+        flex-direction: column;
+        padding: 2vw 2vw;
+        width: 100%;
+        max-width: 600px;
+        border-radius: 10px;
+        margin: 5px;
+        input, textarea{
+            max-width: 100%;
+            border: 0;
+            margin: 10px 0;
+            padding: 20px;
+            outline: none;
+            font-size: 16px;
+            border: .1rem solid rgba(0, 0, 0, .2);
+        }
+        
+        p{
+            margin: 20px 0;
+        }
     }
-  }
-
-  .contact-form {
-    background: var(--white);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: var(--space-3);
-    box-shadow: var(--box-shadow-sm);
-    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-2); }
-    .btn { .spinner { width: 18px; height: 18px; border-width: 2px; border-color: rgba(255,255,255,.4); border-top-color: var(--white); } }
-  }
 }
 
-@media screen and (max-width: 768px) {
-  .contact {
-    .contact-layout { grid-template-columns: 1fr; }
-    .field-row { grid-template-columns: 1fr; }
-  }
-}
+

@@ -1,31 +1,32 @@
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react'
+import Image from '../../assets/chicken.jpg';
 
-export default function BlogItem({ blog }) {
-  const b = blog || {
-    title: 'Welcome to KPL FoodCoop',
-    slug: 'welcome',
-    excerpt: 'Discover fresh, local produce delivered to your door.',
-    image_url: 'https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=800',
-    author: 'KPL Team',
-    created_at: new Date().toISOString(),
-  };
-
-  const readingTime = (text = '') => Math.max(1, Math.ceil((text || '').split(' ').length / 200));
-
-  return (
-    <Link to={`/blogs/${b.slug}`} className="card blog-card">
-      <div className="image">
-        <img src={b.image_url} alt={b.title} loading="lazy" />
-      </div>
-      <div className="content">
-        <div className="meta">
-          <span className="author">{b.author}</span>
-          <span className="duration">{readingTime(b.excerpt)} min read</span>
+export default  function BlogItem() {
+  const [visible, setVisible] = useState(false);
+const readingTime = (articleText) => {
+    const wordsArray = articleText.split(' ');
+    // Count the number of words in the array
+    const wordCount = wordsArray.length;
+    // Calculate the estimated reading time
+    const wordsPerMinute = 200;
+    return Math.ceil(wordCount / wordsPerMinute);
+}
+  
+  
+  
+  
+  return(
+    <div className="card blog">
+        <div className="image">
+            <img src={Image} alt="" />
         </div>
-        <h3>{b.title}</h3>
-        <p>{b.excerpt}</p>
-        <span className="read-more">Read more →</span>
-      </div>
-    </Link>
-  );
+        <div className="content">
+            <div className="meta">
+                <span className='trailing'>{new Date().toDateString()}</span>
+                <div className="duration">{readingTime("Lorem ipsum")} min read</div>
+            </div>
+            <a href="/blogs/id-here"><h3>Delicious chicken piece</h3></a>
+            <p>1 chicken piece with regular chips.</p>
+        </div>
+    </div>)
 }

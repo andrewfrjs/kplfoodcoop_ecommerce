@@ -1,77 +1,53 @@
-import { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { FaArrowAltCircleLeft } from 'react-icons/fa';
-import Newsletter from '../../components/Newsletter/Newsletter';
+import React, { useState } from 'react'
+import Image from '../../assets/chicken.jpg';
+import { FaTimeline } from 'react-icons/fa6';
+import { FaArrowAltCircleLeft, FaDAndD } from 'react-icons/fa';
 import BlogItem from './BlogItem';
-import { fetchBlogBySlug, fetchBlogs } from '../../lib/api';
+import { NavLink } from 'react-router-dom';
+import Newsletter from '../../components/Newsletter/Newsletter';
 import { ShareSocial } from 'react-share-social';
-import './SingleBlog.scss';
 
-export default function SingleBlog() {
-  const { id } = useParams();
-  const [blog, setBlog] = useState(null);
-  const [related, setRelated] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    setLoading(true);
-    fetchBlogBySlug(id)
-      .then((b) => {
-        setBlog(b);
-        fetchBlogs().then((all) => setRelated(all.filter((x) => x.id !== b?.id).slice(0, 3)));
-      })
-      .catch(() => setBlog(null))
-      .finally(() => setLoading(false));
-    window.scrollTo(0, 0);
-  }, [id]);
-
-  if (loading) return <section className="single-blog"><div className="spinner" /></section>;
-  if (!blog) {
-    return (
-      <section className="empty-state">
-        <h2>Post not found</h2>
-        <Link to="/blogs" className="btn btn-green">Back to Blogs</Link>
-      </section>
-    );
-  }
-
-  return (
-    <article className="single-blog">
-      <Link to="/blogs" className="back-link"><FaArrowAltCircleLeft /> Back to blogs</Link>
-
-      <div className="blog-hero">
-        <img src={blog.image_url} alt={blog.title} />
-        <div className="hero-overlay">
-          <h1>{blog.title}</h1>
-          <div className="meta">
-            <span>By {blog.author}</span>
-            <span>·</span>
-            <span>{new Date(blog.created_at).toLocaleDateString()}</span>
-          </div>
+export default  function SingleBlog() {
+  const [visible, setVisible] = useState(false);
+const readingTime = (articleText) => {
+    const wordsArray = articleText.split(' ');
+    // Count the number of words in the array
+    const wordCount = wordsArray.length;
+    // Calculate the estimated reading time
+    const wordsPerMinute = 200;
+    return Math.ceil(wordCount / wordsPerMinute);
+}
+  
+  
+  
+  
+  return(
+    <div className="card blog">
+        <NavLink className="btn"><FaArrowAltCircleLeft /> Back</NavLink>
+        <div className="image">
+            <img src={Image} alt=""/>
         </div>
-      </div>
-
-      <div className="blog-body">
-        <p className="excerpt">{blog.excerpt}</p>
-        <p className="content-text">{blog.content}</p>
-
-        <div className="share-block">
-          <ShareSocial
-            url={window.location.href}
-            socialTypes={['facebook', 'twitter', 'reddit', 'linkedin']}
-            title="Share this article"
-          />
+        <div className="content">
+            <div className="meta">
+                <div className="trailing">
+                    <span>{new Date().toDateString()}</span>
+                </div>
+                <div className="duration"> {readingTime("Lorem ipsum")} min read</div>
+            </div>
+            <p>
+              <div className="hash">special</div>
+              <div className="hash">menu</div>
+              <div className="hash">calorie-free</div>
+            </p>
+            <h3>Delicious chicken piece</h3>
+            <p>1 chicken piece with regular chips.</p>
         </div>
-      </div>
-
-      <div className="related-posts">
-        <h2 className="heading">Related Articles</h2>
-        <div className="grid">
-          {related.map((r) => <BlogItem key={r.id} blog={r} />)}
+        <h1 className="heading">Similar Articles</h1>
+        <div className="container">
+            <BlogItem />
+            <BlogItem />
+            <BlogItem />
         </div>
-      </div>
-
-      <Newsletter />
-    </article>
-  );
+        <ShareSocial url ={window.location.href} socialTypes={['facebook','twitter','reddit','linkedin']} title={'share this page'} />
+    </div>)
 }

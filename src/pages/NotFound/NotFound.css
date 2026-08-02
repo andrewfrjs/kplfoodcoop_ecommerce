@@ -1,20 +1,8 @@
-.not-found {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 8rem 2% 4rem;
-  .nf-content {
-    text-align: center;
-    .code {
-      font-size: 10rem;
-      font-weight: 800;
-      color: var(--green);
-      line-height: 1;
-      letter-spacing: -.03em;
-    }
-    h2 { margin: 1rem 0; }
-    p { font-size: 1.6rem; color: var(--light-color); margin-bottom: var(--space-3); }
-    .nf-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
-  }
+.not-found{
+    width: inherit;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    flex-direction: column;
 }
